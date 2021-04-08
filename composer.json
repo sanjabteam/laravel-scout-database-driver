@@ -1,0 +1,54 @@
+{
+    "name": "sanjabteam/laravel-scout-database-driver",
+    "description": "Laravel scout database driver.",
+    "keywords": [
+        "sanjabteam",
+        "laravel-scout-database-driver"
+    ],
+    "homepage": "https://github.com/sanjabteam/laravel-scout-database-driver",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "amir alizadeh",
+            "email": "amiralizadeh9480@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8",
+        "illuminate/support": "^8",
+        "laravel/scout": "^8.6"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6",
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sanjab\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sanjab\\Tests\\": "tests",
+            "Sanjab\\Tests\\Database\\Factories\\": "tests/database/factories",
+            "Sanjab\\Tests\\Database\\Seeders\\": "tests/database/seeders/"
+        }
+    },
+    "scripts": {
+        "test": "DB_CONNECTION=testing vendor/bin/phpunit",
+        "test-coverage": "DB_CONNECTION=testing vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "bin-compat": "full"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sanjab\\ScoutDatabaseDriverServiceProvider"
+            ]
+        }
+    }
+}
