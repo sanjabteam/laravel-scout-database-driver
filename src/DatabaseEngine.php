@@ -57,7 +57,7 @@ class DatabaseEngine extends Engine
         $allWords = $models->map(function ($model) {
             return array_map(function ($word) {
                 return [
-                    'word' => $word
+                    'word' => $word,
                 ];
             }, $this->getSearchableWords($model->toSearchableArray()));
         })->flatten(1)->unique('word');
@@ -77,7 +77,7 @@ class DatabaseEngine extends Engine
                     'object_id'  => $model->getScoutKey(),
                     'type'       => $type,
                     'meta'       => json_encode($model->toSearchableArray()),
-                    'scout_meta' => empty($model->scoutMetadata()) ? null : json_encode($model->scoutMetadata())
+                    'scout_meta' => empty($model->scoutMetadata()) ? null : json_encode($model->scoutMetadata()),
                 ];
             })->filter()->values();
 
@@ -95,6 +95,7 @@ class DatabaseEngine extends Engine
                     $wordsData = collect($this->getSearchableWords(json_decode($object->meta, true), true));
                     $fullWords = $wordsData->where('full', true)->pluck('word')->toArray();
                     $objectWords = $this->wordsTable()->whereIn('word', $wordsData->pluck('word')->toArray())->get();
+
                     return $objectWords->map(function ($objectWord) use ($object, $fullWords) {
                         return [
                             'searchable_object_id' => $object->id,
@@ -161,7 +162,7 @@ class DatabaseEngine extends Engine
 
         return [
             'ids' => $searchResults->pluck('object_id')->toArray(),
-            'total' => $searchResults->count()
+            'total' => $searchResults->count(),
         ];
     }
 
@@ -180,7 +181,7 @@ class DatabaseEngine extends Engine
 
         return [
             'ids' => $searchQuery->forPage($page, $perPage)->get()->pluck('object_id')->toArray(),
-            'total' => $countQuery->count()
+            'total' => $countQuery->count(),
         ];
     }
 
@@ -373,7 +374,7 @@ class DatabaseEngine extends Engine
             }, $out)),
             'bindings' => array_map(function ($o) {
                 return $o['binding'];
-            }, $out)
+            }, $out),
         ];
     }
 
@@ -381,12 +382,13 @@ class DatabaseEngine extends Engine
      * Generate case query.
      *
      * @param string $statement
-     * @param integer $relevance
+     * @param int $relevance
      * @return void
      */
     protected function getCaseQuery(string $statement, int $relevance = 1)
     {
         $fullColumn = $this->getConnection()->getQueryGrammar()->wrap('sanjab_searchable_object_words.full');
+
         return "(case when $statement then (case when $fullColumn = 1 then $relevance * 2 else $relevance end) else 0 end)";
     }
 
@@ -394,7 +396,7 @@ class DatabaseEngine extends Engine
      * Convert scout searchable array to words only.
      *
      * @param array $searchableArray
-     * @param boolean $asArray  set this to true to get each item as array with informations
+     * @param bool $asArray  set this to true to get each item as array with informations
      * @return array
      */
     protected function getSearchableWords(array $searchableArray, bool $asArray = false)
@@ -421,6 +423,7 @@ class DatabaseEngine extends Engine
         } else {
             $words = $words->unique();
         }
+
         return $words->toArray();
     }
 
@@ -488,7 +491,7 @@ class DatabaseEngine extends Engine
     /**
      * Is connection a postgress connection.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPostgresql()
     {

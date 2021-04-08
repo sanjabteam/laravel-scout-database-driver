@@ -96,7 +96,7 @@ class DatabaseEngineTest extends TestCase
         $this->assertCount(
             1,
             Category::search('Hello World', function (Builder $query, string $search, array $options) {
-                return $query->where('meta', 'LIKE', "%Hello World 2%");
+                return $query->where('meta', 'LIKE', '%Hello World 2%');
             })
             ->get()
         );
@@ -152,7 +152,7 @@ class DatabaseEngineTest extends TestCase
             'identify' => false,
 
             'database' => [
-                'chunks' => 250
+                'chunks' => 250,
             ],
         ]);
     }
@@ -161,7 +161,7 @@ class DatabaseEngineTest extends TestCase
     {
         return [
             \Laravel\Scout\ScoutServiceProvider::class,
-            \Sanjab\ScoutDatabaseDriverServiceProvider::class
+            \Sanjab\ScoutDatabaseDriverServiceProvider::class,
         ];
     }
 }

@@ -38,7 +38,7 @@ class Category extends Model
     public $timestamps = false;
 
     /**
-     * Posts with this category
+     * Posts with this category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

@@ -98,4 +98,3 @@ class Post extends Model
         return new PostFactory();
     }
 }
-
