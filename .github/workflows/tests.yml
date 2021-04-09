@@ -7,6 +7,17 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: forge
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       fail-fast: true
       matrix:
@@ -36,3 +47,10 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=coverage.clover --verbose && bash <(curl -s https://codecov.io/bash)
         env:
           DB_CONNECTION: testing
+      - name: Execute tests (Via MySQL)
+        run: vendor/bin/phpunit
+        env:
+          DB_CONNECTION: mysql
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_USERNAME: root
+          DB_PASSWORD: root
