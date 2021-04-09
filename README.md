@@ -1,4 +1,4 @@
-<h1 align="center">Laravel Scout Database Engine</h1>
+<h1 align="center">Laravel Scout Database Driver</h1>
 
 <div align="center">
 
@@ -13,6 +13,15 @@
 
 Database driver for Laravel scout.
 
+## Why?
+
+Of-course search engines like algolia are faster and more accurate.
+
+But you can use database driver for these purposes.
+
+1. You don't want to spend money on services like algolia now but you want your web app be flexible to use a search engine in future!
+2. You want to test your app in local environment without running a search engine on your local machine or use a online search engine service.
+
 ## Installation
 
 You can install the package via composer:
@@ -24,8 +33,73 @@ composer require sanjabteam/laravel-scout-database-driver
     * Laravel 8 >=
     * Laravel Scout 8 >=
 
-## Configuration
+Run migrations:
+```bash
+php artisan migrate
+```
 
+And [change scout default driver](#configuration).
+
+## Configuration
+You should change your default scout driver to `database`.
+
+.env:
+```env
+SCOUT_DRIVER=database
+```
+
+-- Or --
+
+config/scout.php:
+
+```php
+'driver' => 'database',
+```
+
+Add database specific configurations at end of scout config file.
+
+config/scout.php:
+```php
+<?php
+
+return [
+    // ...
+    'driver' => ...
+
+    // ..
+
+    'database' => [
+        // All optional database configurations here
+        'connection' => ...,
+        'mode' => ...,
+    ],
+];
+
+```
+
+> All following configurations are optional
+
+`scout.database.connection`:
+
+Database connection to store search data. Change this if you don't want use your default database for search data.
+
+`scout.database.mode`:
+
+Search mode.
+
+Possible values:
+* `LIKE`  More strict, faster
+* `LIKE_EXPANDED`  Less strict, slower
+
+`scout.database.relevance`:
+
+Relevance value for search query.
+
+Check the [source code](./src/DatabaseEngine.php) to understand above configurations.
+
+
+## Limits
+* Order is not supported.
 
 ## Contributing
 
