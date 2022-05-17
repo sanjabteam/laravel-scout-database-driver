@@ -1,3 +1,5 @@
+> :warning: Deprecated: Laravel scout now supports database and collection drivers for testing purpose
+
 <h1 align="center">Laravel Scout Database Driver</h1>
 
 <div align="center">
